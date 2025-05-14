@@ -19,10 +19,17 @@ app.get('/api/translate', async (req, res) => {
     });
     res.json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ error: err.message });
+    console.error('Error response from PONS:', err.response?.data || err.message);
+    res.status(err.response?.status || 500).json({
+      error: err.message,
+      details: err.response?.data || 'No additional info'
+    });
   }
 
+  console.log('Secret:', process.env.PONS_SECRET ? 'Loaded' : 'Missing');
+
 });
+
 
 
 
